@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
@@ -22,7 +23,7 @@ import javax.imageio.ImageIO;
 
 
 
-public class ScreenWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener{
+public class ScreenWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener, MouseMotionListener{
 
 	//window stuff
 	private boolean isRunning,isDone;
@@ -64,6 +65,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		this.addWindowListener(this);
 		this.addKeyListener(this);
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		this.setSize(windowX,windowY);
 		this.setTitle("");
 		isRunning = true;
@@ -221,8 +223,12 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			new Thread(window).start();
 		}
 		
-		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 23 && arg0.getY() <= 3+20+20*numMapTilesY)){
+		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
+			int i = (arg0.getX() - 23)/20;
+			int j = (arg0.getY()-65)/20;
+			int index = 0+(j*numMapTilesY) + i;
 			
+			map[index] = brushValue;
 		}
 	}
 
@@ -239,7 +245,9 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		   System.arraycopy(a, 0, c, 0, aLen);
 		   System.arraycopy(b, 0, c, aLen, bLen);
 		   return c;
-		}
+	}
+	
+	
 	
 	public static int getBrushValue(){
 		return brushValue;
@@ -247,6 +255,29 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	
 	public static void setBrushValue(int a){
 		brushValue = a;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		if((arg0.getX() >= 3 && arg0.getX() <= 23) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
+			PaletteWindow window = new PaletteWindow();
+			new Thread(window).start();
+		}
+		
+		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
+			int i = (arg0.getX() - 23)/20;
+			int j = (arg0.getY()-65)/20;
+			int index = 0+(j*numMapTilesY) + i;
+			
+			map[index] = brushValue;
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

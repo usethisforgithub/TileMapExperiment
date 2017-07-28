@@ -199,9 +199,7 @@ public class PaletteWindow extends Frame implements WindowListener, Runnable, Ke
 		if(arg0.getY() >= 25+40){
 			int i = arg0.getX()/20;
 			int j = (arg0.getY()-65)/20;
-			System.out.println("i: " + i);
-			System.out.println("j: " + j);
-			System.out.println("index: " + (0+(j*32) + i));
+			
 			
 			
 			ScreenWindow.setBrushValue(0+(j*32) + i);
