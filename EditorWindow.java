@@ -270,7 +270,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
 			int i = (arg0.getX() - 23)/20;
 			int j = (arg0.getY()-65)/20;
-			int index = 0+(j*numMapTilesY) + i;
+			int index = 0+(j*numMapTilesX) + i;
 			
 			map[index] = brushValue;
 		}
@@ -312,7 +312,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
 			int i = (arg0.getX() - 23)/20;
 			int j = (arg0.getY()-65)/20;
-			int index = 0+(j*numMapTilesY) + i;
+			int index = 0+(j*numMapTilesX) + i;
 			
 			map[index] = brushValue;
 		}
