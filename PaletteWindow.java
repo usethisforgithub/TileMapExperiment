@@ -85,7 +85,7 @@ public class PaletteWindow extends Frame implements WindowListener, Runnable, Ke
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		
-		g2.drawImage(mapElements[ScreenWindow.getBrushValue()], 3, 25, null);
+		g2.drawImage(mapElements[EditorWindow.getBrushValue()], 3, 25, null);
 		
 		
 		for(int i = 0; i < 32; i++){
@@ -202,7 +202,7 @@ public class PaletteWindow extends Frame implements WindowListener, Runnable, Ke
 			
 			
 			
-			ScreenWindow.setBrushValue(0+(j*32) + i);
+			EditorWindow.setBrushValue(0+(j*32) + i);
 		}
 		
 	}
