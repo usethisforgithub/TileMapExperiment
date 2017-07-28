@@ -220,6 +220,10 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			PaletteWindow window = new PaletteWindow();
 			new Thread(window).start();
 		}
+		
+		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 23 && arg0.getY() <= 3+20+20*numMapTilesY)){
+			
+		}
 	}
 
 	@Override
