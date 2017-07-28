@@ -4,7 +4,6 @@ import java.awt.Frame;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.MouseInfo;
 import java.awt.RenderingHints;
 
 import java.awt.event.KeyEvent;
@@ -14,50 +13,33 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 
 
-public class ScreenWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener{
+public class PaletteWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener{
 
 	//window stuff
 	private boolean isRunning,isDone;
 	private Image imgBuffer;
 	
-	private static int brushValue = 0;
-	
-	int numMapTilesX, numMapTilesY, windowX, windowY;
-	
-	 int[] map;
-	
 	BufferedImage[] mapElements;
 	
-	public ScreenWindow(int x, int y){
+	int windowX, windowY;
+	
+
+	
+	public PaletteWindow(){
 		super();
 		
-		numMapTilesX = x;
-		numMapTilesY = y;
-		
-		map = new int[x*y];
-		
-		for(int i = 0; i < map.length; i++){
-			map[i] = 1247;//fills entire map with block 1247
-		}
-		
-		windowX = 20 + 20*numMapTilesX + 7;
-		windowY = 29 + 40 + 20*numMapTilesY;
-		
-		
-		
+		windowX = 20*32 + 7;
+		windowY = 29 + 40 + 20*39;
 		
 		
 		imgBuffer = this.createImage(windowX, windowY);
-	
+		
 		mapElements = SpriteSheet.getAsArray("sum.png", 39, 32, 20, 20);
+		
+		
 		
 		
 		//more window stuff
@@ -65,14 +47,15 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.setSize(windowX,windowY);
-		this.setTitle("");
+		this.setTitle("Palette");
 		isRunning = true;
 		isDone = false;
 		this.setVisible(true);
+		
 		this.setResizable(false);
 		
 		
-	
+		
 		
 	}
 	
@@ -84,7 +67,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			
 			
 			try{
-				Thread.sleep(100);
+				Thread.sleep(10);
 				}catch(InterruptedException ie){
 					ie.printStackTrace();
 				}
@@ -98,17 +81,16 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		Graphics2D g2 = (Graphics2D)imgBuffer.getGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		//background color
-		//g2.setColor(new Color(153,204,255));
 		g2.setColor(Color.white);
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
-		g2.drawImage(mapElements[brushValue], 23, 25, null);
 		
-		g2.setColor(Color.red);
-		g2.fillRect(3, 25, 20, 20);
-		//g2.drawImage(mapElements[tileCounter], 25, 25, null);
-		for(int i = 0; i < numMapTilesX; i++){
-			for(int j = 0; j < numMapTilesY; j++){
-				g2.drawImage(mapElements[map[0+(j*numMapTilesX) + i]], 3+20+i*20, 25 + 40 + 20*j, null);//map[0+(i*32) + j]
+		
+		g2.drawImage(mapElements[ScreenWindow.getBrushValue()], 3, 25, null);
+		
+		
+		for(int i = 0; i < 32; i++){
+			for(int j = 0; j < 39; j++){
+				g2.drawImage(mapElements[0+(j*32) + i], 3+i*20, 25 + 40 + 20*j, null);//map[0+(i*32) + j]
 			}
 		}
 		
@@ -131,16 +113,16 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		while(true){
-			if(isDone){
-				System.exit(0);
-			}try{
-				Thread.sleep(100);
-			}catch(InterruptedException ie){
-				ie.printStackTrace();
-			}
+		//while(true){
+		//	if(isDone){
+			//	System.exit(0);
+			//}try{
+		//		Thread.sleep(100);
+		//	}catch(InterruptedException ie){
+		//		ie.printStackTrace();
+		//	}
 			
-		}
+		//}
 		
 	}
 
@@ -186,14 +168,12 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	public void keyPressed(KeyEvent e) {
 	
 		
-		
-		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-	
+		
 	}
 
 	@Override
@@ -216,10 +196,17 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		if((arg0.getX() >= 3 && arg0.getX() <= 23) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
-			PaletteWindow window = new PaletteWindow();
-			new Thread(window).start();
+		if(arg0.getY() >= 25+40){
+			int i = arg0.getX()/20;
+			int j = (arg0.getY()-65)/20;
+			System.out.println("i: " + i);
+			System.out.println("j: " + j);
+			System.out.println("index: " + (0+(j*32) + i));
+			
+			
+			ScreenWindow.setBrushValue(0+(j*32) + i);
 		}
+		
 	}
 
 	@Override
@@ -227,22 +214,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public BufferedImage[] concat(BufferedImage[] a, BufferedImage[] b) {
-		   int aLen = a.length;
-		   int bLen = b.length;
-		   BufferedImage[] c= new BufferedImage[aLen+bLen];
-		   System.arraycopy(a, 0, c, 0, aLen);
-		   System.arraycopy(b, 0, c, aLen, bLen);
-		   return c;
-		}
-	
-	public static int getBrushValue(){
-		return brushValue;
-	}
-	
-	public static void setBrushValue(int a){
-		brushValue = a;
-	}
 
+	
 }
