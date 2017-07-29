@@ -261,10 +261,43 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 					FileReader fr = new FileReader(file);
 					BufferedReader in = new BufferedReader(fr);
 					String line;
+					int numLines = 0;
 					try {
+						
 						while((line = in.readLine()) != null){
 						  //use String file here
+							numLines++;
 						}
+						
+						
+						fr = new FileReader(file);
+						in = new BufferedReader(fr);
+						
+						line = in.readLine();
+						String x = line.substring(0,line.indexOf(" "));
+						line = in.readLine();
+						String y = line.substring(line.indexOf(" ") + 1);
+						String[] stringMap = new String[numLines];
+						
+						int i = 0;
+						while((line = in.readLine()) != null){
+							  //use String file here
+								stringMap[i] = line;
+								i++;
+						}
+						
+						loadedX = Integer.parseInt(x);
+						loadedY = Integer.parseInt(y);
+						loadedMap = new int[numLines];
+						
+						for(int j = 0; j < numLines; j++) {
+							loadedMap[j] = Integer.parseInt(stringMap[j]);
+						}
+						
+						
+						
+						
+						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
