@@ -99,10 +99,15 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 		g2.setColor(Color.black);
 		g2.fillRect(3, 25, 300, 236);
 		
+		g2.setColor(Color.white);
+		g2.drawString("NEW", 100, 25+(236/4));
+		
+		
 		g2.setColor(Color.gray);
 		g2.fillRect(3, 261, 300, 236);
 		
-	
+		g2.setColor(Color.white);
+		g2.drawString("LOAD", 100, 261+(236/4));
 		
 			
 		
@@ -275,8 +280,10 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 						
 						line = in.readLine();
 						String x = line.substring(0,line.indexOf(" "));
-						line = in.readLine();
 						String y = line.substring(line.indexOf(" ") + 1);
+						
+						line = in.readLine();
+						
 						String[] stringMap = new String[numLines];
 						
 						int i = 0;

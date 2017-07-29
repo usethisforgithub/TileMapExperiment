@@ -15,11 +15,15 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
 
 
@@ -169,16 +173,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		while(true){
-			if(isDone){
-				System.exit(0);
-			}try{
-				Thread.sleep(100);
-			}catch(InterruptedException ie){
-				ie.printStackTrace();
-			}
-			
-		}
+		
 		
 	}
 
@@ -257,8 +252,39 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		
 		//menu button
 		if((arg0.getX() >= 3 && arg0.getX() <= 23) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
-			MenuWindow window = new MenuWindow();
-			new Thread(window).start();
+			JFrame parentFrame = new JFrame();
+			 
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Specify a file to save");   
+			 
+			int userSelection = fileChooser.showSaveDialog(parentFrame);
+			 
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				try{
+					File file = fileChooser.getSelectedFile();
+					String filename = file.getAbsolutePath() + ".txt";
+					FileWriter fw = new FileWriter(filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					
+					
+					//bw.newLine();
+					bw.write(numMapTilesX + " " +numMapTilesY);
+					bw.newLine();
+					bw.write("20 20");
+					bw.newLine();
+					
+					for(int i = 0; i < map.length; i++) {
+						bw.write("" + map[i]);
+						bw.newLine();
+					}
+					bw.close();
+					System.out.println(file + ".txt");
+				}
+				catch(IOException ioe)
+				{
+					System.err.println(":(");
+				}
+			}
 		}
 		
 		//if palette button is clicked
