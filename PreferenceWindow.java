@@ -31,8 +31,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-//needs no files
-public class MenuWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener{
+
+public class PreferenceWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener{
 
 	//window stuff
 	private boolean isRunning,isDone;
@@ -43,7 +43,7 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 	
 
 	
-	public MenuWindow(){
+	public PreferenceWindow(){
 		super();
 		
 		windowX = 300;
@@ -100,27 +100,27 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 		g2.fillRect(3, 25, 300, 104);
 		
 		g2.setColor(Color.white);
-		g2.drawString("NEW", 100, 75);
+		g2.drawString("Set Save Directory", 100, 75);
 		
 		
 		g2.setColor(Color.gray);
 		g2.fillRect(3, 105, 300, 184);
 		
 		g2.setColor(Color.white);
-		g2.drawString("LOAD", 100, 155);
+		g2.drawString("Set Spritesheet Directory", 100, 155);
 		
 		g2.setColor(Color.black);
 		g2.fillRect(3, 185, 300, 264);
 		
 		g2.setColor(Color.white);
-		g2.drawString("Add Spritesheet", 100, 235);
+		g2.drawString("Set Export Directory", 100, 235);
 		
 		
 		g2.setColor(Color.gray);
 		g2.fillRect(3, 265, 300, 345);
 		
 		g2.setColor(Color.white);
-		g2.drawString("Preferences", 100, 315);
+		g2.drawString("View Current Preferences", 100, 315);
 		
 			
 		
@@ -224,132 +224,24 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		//new
+		//preference window
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 25 && arg0.getY() < 104)) {
-			JTextField aField = new JTextField(5);
-			JTextField bField = new JTextField(5);
-			JTextField cField = new JTextField(5);
-			JTextField dField = new JTextField(5);
-
-			JPanel myPanel = new JPanel();
-			myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
-
-			myPanel.add(new JLabel("Enter x dim:"));
-			myPanel.add(aField);
-
-			myPanel.add(Box.createVerticalStrut(15));
-
-			myPanel.add(new JLabel("Enter y dim:"));
-			myPanel.add(bField);
-
-			myPanel.add(Box.createVerticalStrut(15));
-
-			int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter dimensions for new tilemap", JOptionPane.OK_CANCEL_OPTION);
 			
-			if (result == JOptionPane.OK_OPTION) {
-				String temp1 = aField.getText();
-				String temp2 = bField.getText();
-
-				if (!temp1.equals("") && !temp2.equals("")) {
-					int x = Integer.parseInt(temp1);
-					int y = Integer.parseInt(temp2);
-					EditorWindow window = new EditorWindow(x,y);
-					new Thread(window).start();
-				}
-				else {
-					System.out.println("One or more fields was left empty. New SCS simulation was not started.");
-				}
-			}
 		}
 		
-		//load
+		//set spritesheet
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 105 && arg0.getY() <184)) {
-			int loadedX = 0;
-			int loadedY = 0;
-			int[] loadedMap = null;
-			
-			JFrame parentFrame = new JFrame();
-			JFileChooser fileChooser = new JFileChooser();
-			int returnVal = fileChooser.showOpenDialog(parentFrame);
-			if(returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				File file = fileChooser.getSelectedFile();
-				//this line is where i should default the filechooser to save directory
-				try {
-					//use file to scan the file
-					FileReader fr = new FileReader(file);
-					BufferedReader in = new BufferedReader(fr);
-					String line;
-					int numLines = 0;
-					try {
-						
-						while((line = in.readLine()) != null){
-						  //use String file here
-							numLines++;
-						}
-						
-						
-						fr = new FileReader(file);
-						in = new BufferedReader(fr);
-						
-						line = in.readLine();
-						String x = line.substring(0,line.indexOf(" "));
-						String y = line.substring(line.indexOf(" ") + 1);
-						
-						line = in.readLine();
-						
-						String[] stringMap = new String[numLines];
-						
-						int i = 0;
-						while((line = in.readLine()) != null){
-							  //use String file here
-								stringMap[i] = line;
-								i++;
-						}
-						
-						loadedX = Integer.parseInt(x);
-						loadedY = Integer.parseInt(y);
-						loadedMap = new int[numLines];
-						
-						for(int j = 0; j < numLines; j++) {
-							loadedMap[j] = Integer.parseInt(stringMap[j]);
-						}
-						
-						
-						
-						
-						
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					} catch (FileNotFoundException e) {
-					System.out.println("File not found.");
-				} catch(NumberFormatException e){
-					
-				}catch(NoSuchElementException e){
-					
-				}
-				
-			}
-			
-			
-			//some how get the loaded data
-			EditorWindow window = new EditorWindow(loadedX,loadedY,loadedMap);
-			new Thread(window).start();
 			
 		}
 		
-		//Add spritesheet
+		//set export directory
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 185 && arg0.getY() < 264)) {
 			System.out.println("add s");
-			//will use spritesheets directory, will use filechooser to select the png file to add
 		}
 		
-		//Preferences
+		//view current preferences
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 265 && arg0.getY() < 344)) {
-			PreferenceWindow window = new PreferenceWindow();
-			new Thread(window).start();	
+			System.out.println("preferences");		
 		}
 		
 	}

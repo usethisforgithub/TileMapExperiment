@@ -62,6 +62,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		
 		imgBuffer = this.createImage(windowX, windowY);
 	
+		//will use spritesheet filepath and sprite reference file
 		mapElements = SpriteSheet.getAsArray("sum.png", 39, 32, 20, 20);
 		
 		
@@ -261,6 +262,8 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Specify a file to save");   
 			 
+			
+			
 			int userSelection = fileChooser.showSaveDialog(parentFrame);
 			 
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -305,7 +308,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 			map[index] = brushValue;
 		}
 		
-		
+		//save button
 		if((arg0.getX() >= 43 && arg0.getX() <= 63) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
 			BufferedImage exportImage = new BufferedImage(20*numMapTilesX,20*numMapTilesY,mapElements[0].getType());//20*numMapTilesX, 20*numMapTilesY
 			Graphics2D gr = exportImage.createGraphics();
@@ -324,6 +327,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 			 
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Specify a file to save");   
+			//fileChooser.setCurrentDirectory("desktop");
 			 
 			int userSelection = fileChooser.showSaveDialog(parentFrame);
 			 
