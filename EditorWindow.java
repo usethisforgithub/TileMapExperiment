@@ -147,6 +147,10 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		
 		g2.setColor(Color.red);
 		g2.fillRect(3, 25, 20, 20);
+		
+		g2.setColor(Color.green);
+		g2.fillRect(43, 25, 20, 20);
+		
 		//g2.drawImage(mapElements[tileCounter], 25, 25, null);
 		for(int i = 0; i < numMapTilesX; i++){
 			for(int j = 0; j < numMapTilesY; j++){
@@ -300,6 +304,58 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 			
 			map[index] = brushValue;
 		}
+		
+		
+		if((arg0.getX() >= 43 && arg0.getX() <= 63) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
+			BufferedImage exportImage = new BufferedImage(20*numMapTilesX,20*numMapTilesY,mapElements[0].getType());//20*numMapTilesX, 20*numMapTilesY
+			Graphics2D gr = exportImage.createGraphics();
+			
+			for(int i = 0; i < numMapTilesX; i++){
+				for(int j = 0; j < numMapTilesY; j++){
+					gr.drawImage(mapElements[map[0+(j*numMapTilesX) + i]], i*20, 20*j, null);//map[0+(i*32) + j]
+				}
+			}
+			
+			
+			
+			
+			
+			JFrame parentFrame = new JFrame();
+			 
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Specify a file to save");   
+			 
+			int userSelection = fileChooser.showSaveDialog(parentFrame);
+			 
+			
+			File file = null;
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				
+					file = fileChooser.getSelectedFile();
+					
+	
+					System.out.println(file + ".png");
+				
+			
+			}
+			
+			
+			
+			
+			try {
+				ImageIO.write(exportImage, "png", file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+			
+		}
+		
+		
 	}
 
 	@Override
