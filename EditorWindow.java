@@ -526,9 +526,9 @@ spriteSheet = s;
 		// TODO Auto-generated method stub
 		
 		
-		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
-			int i = (arg0.getX() - 23)/20;
-			int j = (arg0.getY()-65)/20;
+		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+xRes*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+yRes*numMapTilesY)){
+			int i = (arg0.getX() - 23)/xRes;
+			int j = (arg0.getY()-65)/yRes;
 			int index = 0+(j*numMapTilesX) + i;
 			
 			map[index] = brushValue;

@@ -117,7 +117,7 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 		g2.fillRect(3, 185, 300, 264);
 		
 		g2.setColor(Color.white);
-		g2.drawString("Add Spritesheet", 100, 235);
+		g2.drawString("Add Palette", 100, 235);
 		
 		
 		g2.setColor(Color.gray);
