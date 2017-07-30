@@ -55,6 +55,8 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 	public EditorWindow(int x, int y, File s){
 		super();
 		
+		brushValue = 0;
+		
 		spriteSheet = s;
 		
 		try {
@@ -142,6 +144,8 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 	
 	public EditorWindow(int x, int y, int[] m, File s){
 		super();
+		
+		brushValue = 0;
 		
 spriteSheet = s;
 		
