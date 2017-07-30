@@ -26,8 +26,14 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 
@@ -350,47 +356,72 @@ spriteSheet = s;
 		
 		//save button
 		if((arg0.getX() >= 3 && arg0.getX() <= 23) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
-			JFrame parentFrame = new JFrame();
-			 
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle("Specify a file to save");   
-			 
 			
-			
-			int userSelection = fileChooser.showSaveDialog(parentFrame);
 			 
-			if (userSelection == JFileChooser.APPROVE_OPTION) {
-				try{
-					File file = fileChooser.getSelectedFile();
-					String filename = file.getAbsolutePath() + ".txt";
-					FileWriter fw = new FileWriter(filename, false);
-					BufferedWriter bw = new BufferedWriter(fw);
-					
-					
-					//bw.newLine();
-					bw.write(spriteSheet.getAbsolutePath());
-					bw.newLine();
-					bw.write(numMapTilesX + " " +numMapTilesY);
-					bw.newLine();
-					bw.write("20 20");
-					bw.newLine();
-					
-					for(int i = 0; i < map.length; i++) {
-						bw.write("" + map[i]);
-						bw.newLine();
-					}
-					bw.close();
-					System.out.println(file + ".txt");
-				}
-				catch(IOException ioe)
-				{
-					System.err.println(":(");
-				}
-				
-				
-				
-				
+			File dir=new File("saves");
+			System.out.println(dir.getAbsolutePath());
+			if(!dir.exists()){
+			
+			dir.mkdir();
 			}
+				
+			
+			
+			
+			JTextField aField = new JTextField(5);
+		
+
+			JPanel myPanel = new JPanel();
+			myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+
+			myPanel.add(new JLabel("Enter map name:"));
+			myPanel.add(aField);
+
+			myPanel.add(Box.createVerticalStrut(15));
+
+			int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter dimensions for new tilemap", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (result == JOptionPane.OK_OPTION) {
+				String temp1 = aField.getText();
+				
+				
+				if (!temp1.equals("")) {
+					
+					
+					
+					try
+					{
+					    File filename = new File(dir, temp1+".txt");
+					    FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+					    BufferedWriter bw = new BufferedWriter(fw);
+					    
+					    bw.write(spriteSheet.getAbsolutePath());
+						bw.newLine();
+						bw.write(numMapTilesX + " " +numMapTilesY);
+						bw.newLine();
+						bw.write("20 20");
+						bw.newLine();
+						
+						for(int i = 0; i < map.length; i++) {
+							bw.write("" + map[i]);
+							bw.newLine();
+						}
+						bw.close();
+					}
+					catch(IOException ioe)
+					{
+					    System.err.println("IOException: " + ioe.getMessage());
+					}
+					
+					
+					
+				}
+				else {
+					System.out.println("One or more fields was left empty. New SCS simulation was not started.");
+				}
+			}
+			
+			
 		}
 		
 		//if palette button is clicked
@@ -407,7 +438,7 @@ spriteSheet = s;
 			map[index] = brushValue;
 		}
 		
-		//save button
+		//export button
 		if((arg0.getX() >= 43 && arg0.getX() <= 63) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
 			BufferedImage exportImage = new BufferedImage(20*numMapTilesX,20*numMapTilesY,mapElements[0].getType());//20*numMapTilesX, 20*numMapTilesY
 			Graphics2D gr = exportImage.createGraphics();

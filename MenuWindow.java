@@ -242,47 +242,45 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			if(returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				file = fileChooser.getSelectedFile();
-		
-			}
-			
-			
-		
-			
-			//gets user input for the x and y of new map and launches the editor using x,y, and file
-			JTextField aField = new JTextField(5);
-			JTextField bField = new JTextField(5);
-			JTextField cField = new JTextField(5);
-			JTextField dField = new JTextField(5);
+				//gets user input for the x and y of new map and launches the editor using x,y, and file
+				JTextField aField = new JTextField(5);
+				JTextField bField = new JTextField(5);
 
-			JPanel myPanel = new JPanel();
-			myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+				JPanel myPanel = new JPanel();
+				myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
 
-			myPanel.add(new JLabel("Enter x dim:"));
-			myPanel.add(aField);
+				myPanel.add(new JLabel("Enter x dim:"));
+				myPanel.add(aField);
 
-			myPanel.add(Box.createVerticalStrut(15));
+				myPanel.add(Box.createVerticalStrut(15));
 
-			myPanel.add(new JLabel("Enter y dim:"));
-			myPanel.add(bField);
+				myPanel.add(new JLabel("Enter y dim:"));
+				myPanel.add(bField);
 
-			myPanel.add(Box.createVerticalStrut(15));
+				myPanel.add(Box.createVerticalStrut(15));
 
-			int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter dimensions for new tilemap", JOptionPane.OK_CANCEL_OPTION);
-			
-			if (result == JOptionPane.OK_OPTION) {
-				String temp1 = aField.getText();
-				String temp2 = bField.getText();
+				int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter dimensions for new tilemap", JOptionPane.OK_CANCEL_OPTION);
+				
+				if (result == JOptionPane.OK_OPTION) {
+					String temp1 = aField.getText();
+					String temp2 = bField.getText();
 
-				if (!temp1.equals("") && !temp2.equals("")) {
-					int x = Integer.parseInt(temp1);
-					int y = Integer.parseInt(temp2);
-					EditorWindow window = new EditorWindow(x,y,file);
-					new Thread(window).start();
-				}
-				else {
-					System.out.println("One or more fields was left empty. New SCS simulation was not started.");
+					if (!temp1.equals("") && !temp2.equals("")) {
+						int x = Integer.parseInt(temp1);
+						int y = Integer.parseInt(temp2);
+						EditorWindow window = new EditorWindow(x,y,file);
+						new Thread(window).start();
+					}
+					else {
+						System.out.println("One or more fields was left empty. New SCS simulation was not started.");
+					}
 				}
 			}
+			
+			
+		
+			
+			
 		}
 		
 		//load
@@ -291,81 +289,92 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			//user selects save file and launches new editor using loaded x loaded y loaded map and file
 			int loadedX = 0;
 			int loadedY = 0;
+			int loadedXr = 0;
+			int loadedYr = 0;
 			int[] loadedMap = null;
-			File files = null;
+			File saveFile = null;
+			File spriteSheet = null;
+			
 			JFrame parentFrame = new JFrame();
 			JFileChooser fileChooser = new JFileChooser();
+			
+			File dir=new File("saves");
+			System.out.println(dir.getAbsolutePath());
+			if(!dir.exists()){
+			
+			dir.mkdir();
+			}
+			
+			fileChooser.setCurrentDirectory(dir);
 			int returnVal = fileChooser.showOpenDialog(parentFrame);
 			if(returnVal == JFileChooser.APPROVE_OPTION)
 			{
-				File file = fileChooser.getSelectedFile();
+				saveFile = fileChooser.getSelectedFile();
 				//this line is where i should default the filechooser to save directory
-				try {
-					//use file to scan the file
-					FileReader fr = new FileReader(file);
-					BufferedReader in = new BufferedReader(fr);
-					String line;
-					int numLines = 0;
-					try {
-						
-						while((line = in.readLine()) != null){
-						  //use String file here
-							numLines++;
-						}
-						
-						
-						fr = new FileReader(file);
-						in = new BufferedReader(fr);
-						
-						line = in.readLine();
-						files = new File(line);
-						
-						line = in.readLine();
-						String x = line.substring(0,line.indexOf(" "));
-						String y = line.substring(line.indexOf(" ") + 1);
-						
-						line = in.readLine();
-						
-						String[] stringMap = new String[numLines];
-						
-						int i = 0;
-						while((line = in.readLine()) != null){
-							  //use String file here
-								stringMap[i] = line;
-								i++;
-						}
-						
-						loadedX = Integer.parseInt(x);
-						loadedY = Integer.parseInt(y);
-						loadedMap = new int[numLines];
-						
-						for(int j = 0; j < numLines; j++) {
-							loadedMap[j] = Integer.parseInt(stringMap[j]);
-						}
-						
-						
-						EditorWindow window = new EditorWindow(loadedX,loadedY,loadedMap,files);
-						new Thread(window).start();
-						
-						
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					} catch (FileNotFoundException e) {
-					System.out.println("File not found.");
-				} catch(NumberFormatException e){
-					
-				}catch(NoSuchElementException e){
-					
-				}
-				
 			}
 			
 			
+			
+			try {
+				
+				FileReader fr = new FileReader(saveFile);
+				BufferedReader in = new BufferedReader(fr);
+				String line;
+				int numLines = 0;
+				
+				line = in.readLine();
+				line = in.readLine();
+				line = in.readLine();
+				while((line = in.readLine()) != null){
+					  //use String file here
+						numLines++;
+					}
+				
+				fr = new FileReader(saveFile);
+				in = new BufferedReader(fr);
+				
+				line = in.readLine();
+				spriteSheet = new File(line);
+				
+				line = in.readLine();
+				String x = line.substring(0,line.indexOf(" "));
+				String y = line.substring(line.indexOf(" ") + 1);
+				
+				line = in.readLine();
+				String xr = line.substring(0,line.indexOf(" "));
+				String yr = line.substring(line.indexOf(" ") + 1);
+				
+				
+				
+				String[] stringMap = new String[numLines];
+				
+				int i = 0;
+				while((line = in.readLine()) != null){
+					  //use String file here
+						stringMap[i] = line;
+						i++;
+				}
+				
+				
+				loadedX = Integer.parseInt(x);
+				loadedY = Integer.parseInt(y);
+				loadedXr = Integer.parseInt(xr);
+				loadedYr = Integer.parseInt(yr);
+				loadedMap = new int[numLines];
+				
+				for(int j = 0; j < numLines; j++) {
+					loadedMap[j] = Integer.parseInt(stringMap[j]);
+				}
+				
+			}catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			//some how get the loaded data
 			
-			
+			EditorWindow window = new EditorWindow(loadedX,loadedY,loadedMap,spriteSheet);
+			new Thread(window).start();
 		}
 		
 		//Add spritesheet
