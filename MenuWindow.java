@@ -232,10 +232,8 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 25 && arg0.getY() < 104)) {
 			
 			
-			
-			
+			//has user select ss file out of the ss directory and stores it as file
 			File file = null;
-			
 			JFrame parentFrame = new JFrame();
 			JFileChooser fileChooser = new JFileChooser();
 			File dir = new File("spriteSheetDir");
@@ -248,30 +246,9 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			}
 			
 			
+		
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			//gets user input for the x and y of new map and launches the editor using x,y, and file
 			JTextField aField = new JTextField(5);
 			JTextField bField = new JTextField(5);
 			JTextField cField = new JTextField(5);
@@ -310,6 +287,8 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 		
 		//load
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 105 && arg0.getY() <184)) {
+			
+			//user selects save file and launches new editor using loaded x loaded y loaded map and file
 			int loadedX = 0;
 			int loadedY = 0;
 			int[] loadedMap = null;
@@ -365,7 +344,8 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 						}
 						
 						
-						
+						EditorWindow window = new EditorWindow(loadedX,loadedY,loadedMap,files);
+						new Thread(window).start();
 						
 						
 					} catch (IOException e) {
@@ -384,14 +364,13 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			
 			
 			//some how get the loaded data
-			EditorWindow window = new EditorWindow(loadedX,loadedY,loadedMap,files);
-			new Thread(window).start();
+			
 			
 		}
 		
 		//Add spritesheet
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 185 && arg0.getY() < 264)) {
-			System.out.println("add s");
+			
 			
 			File dir=new File("spriteSheetDir");
 			System.out.println(dir.getAbsolutePath());
@@ -400,9 +379,8 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			dir.mkdir();
 			}
 			
-			
+			//selects file and copies it into spriteSheetDir
 			File sheetToAdd = null;
-			
 			JFrame parentFrame = new JFrame();
 			JFileChooser fileChooser = new JFileChooser();
 			int returnVal = fileChooser.showOpenDialog(parentFrame);
@@ -410,7 +388,6 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			{
 				sheetToAdd = fileChooser.getSelectedFile();
 			}
-			
 			File dest = new File(dir, sheetToAdd.getName());
 			try {
 			    FileUtils.copyFile(sheetToAdd, dest);
@@ -420,7 +397,7 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			
 			
 			
-			
+			//user inputs reference data for the added ss which is saved to reference
 			JTextField aField = new JTextField(5);
 			JTextField bField = new JTextField(5);
 			JTextField cField = new JTextField(5);

@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 
 
@@ -22,22 +23,28 @@ public class PaletteWindow extends Frame implements WindowListener, Runnable, Ke
 	private boolean isRunning,isDone;
 	private Image imgBuffer;
 	
-	BufferedImage[] mapElements;
+	private BufferedImage[] mapElements;
 	
-	int windowX, windowY;
-	
+	private int windowX, windowY;
+	private int spriteSheetX, spriteSheetY, xRes, yRes;
 
 	
-	public PaletteWindow(){
+	public PaletteWindow(BufferedImage[] elements, int yd, int xd, int xr, int yr){
 		super();
+		spriteSheetX = xd;
+		spriteSheetY = yd;
+		xRes = xr; 
+		yRes = yr;
 		
-		windowX = 20*32 + 7;
-		windowY = 29 + 40 + 20*39;
+		
+		
+		windowX = xRes*spriteSheetX + 7;
+		windowY = 29 + 40 + yRes*spriteSheetY;
 		
 		
 		imgBuffer = this.createImage(windowX, windowY);
 		
-		mapElements = SpriteSheet.getAsArray("sum.png", 39, 32, 20, 20);
+		mapElements = elements;
 		
 		
 		
@@ -88,9 +95,9 @@ public class PaletteWindow extends Frame implements WindowListener, Runnable, Ke
 		g2.drawImage(mapElements[EditorWindow.getBrushValue()], 3, 25, null);
 		
 		
-		for(int i = 0; i < 32; i++){
-			for(int j = 0; j < 39; j++){
-				g2.drawImage(mapElements[0+(j*32) + i], 3+i*20, 25 + 40 + 20*j, null);//map[0+(i*32) + j]
+		for(int i = 0; i < spriteSheetX; i++){
+			for(int j = 0; j < spriteSheetY; j++){
+				g2.drawImage(mapElements[0+(j*spriteSheetX) + i], 3+i*xRes, 25 + 40 + yRes*j, null);//map[0+(i*32) + j]
 			}
 		}
 		
@@ -197,12 +204,12 @@ public class PaletteWindow extends Frame implements WindowListener, Runnable, Ke
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		if(arg0.getY() >= 25+40){
-			int i = arg0.getX()/20;
-			int j = (arg0.getY()-65)/20;
+			int i = arg0.getX()/xRes;
+			int j = (arg0.getY()-65)/yRes;
 			
 			
 			
-			EditorWindow.setBrushValue(0+(j*32) + i);
+			EditorWindow.setBrushValue(0+(j*spriteSheetX) + i);
 		}
 		
 	}

@@ -248,7 +248,7 @@ spriteSheet = s;
 		//g2.drawImage(mapElements[tileCounter], 25, 25, null);
 		for(int i = 0; i < numMapTilesX; i++){
 			for(int j = 0; j < numMapTilesY; j++){
-				g2.drawImage(mapElements[map[0+(j*numMapTilesX) + i]], 3+20+i*20, 25 + 40 + 20*j, null);//map[0+(i*32) + j]
+				g2.drawImage(mapElements[map[0+(j*numMapTilesX) + i]], 3+20+i*xRes, 25 + 40 + yRes*j, null);//map[0+(i*32) + j]
 			}
 		}
 		
@@ -395,13 +395,13 @@ spriteSheet = s;
 		
 		//if palette button is clicked
 		if((arg0.getX() >= 23 && arg0.getX() <= 43) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
-			PaletteWindow window = new PaletteWindow();
+			PaletteWindow window = new PaletteWindow(mapElements,spriteSheetY,spriteSheetX,xRes,yRes);
 			new Thread(window).start();
 		}
 		
-		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
-			int i = (arg0.getX() - 23)/20;
-			int j = (arg0.getY()-65)/20;
+		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+xRes*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+yRes*numMapTilesY)){
+			int i = (arg0.getX() - 23)/xRes;
+			int j = (arg0.getY()-65)/yRes;
 			int index = 0+(j*numMapTilesX) + i;
 			
 			map[index] = brushValue;
@@ -489,10 +489,7 @@ spriteSheet = s;
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		if((arg0.getX() >= 3 && arg0.getX() <= 23) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
-			PaletteWindow window = new PaletteWindow();
-			new Thread(window).start();
-		}
+		
 		
 		if((arg0.getX() >= 23 && arg0.getX() <= 3+20+20*numMapTilesX) && (arg0.getY() >= 65 && arg0.getY() <= 65+20*numMapTilesY)){
 			int i = (arg0.getX() - 23)/20;
