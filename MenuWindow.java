@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Frame;
 
 import java.awt.Graphics2D;
@@ -124,7 +125,7 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 		g2.fillRect(3, 265, 300, 345);
 		
 		g2.setColor(Color.white);
-		g2.drawString("Preferences", 100, 315);
+		g2.drawString("About/Help", 100, 315);
 		
 			
 		
@@ -486,10 +487,9 @@ public class MenuWindow extends Frame implements WindowListener, Runnable, KeyLi
 			
 		}
 		
-		//Preferences
+		//About/help
 		if((arg0.getX() >= 3 && arg0.getX() <= windowX-4) && (arg0.getY() >= 265 && arg0.getY() < 344)) {
-			PreferenceWindow window = new PreferenceWindow();
-			new Thread(window).start();	
+			System.out.println("Sorry, this feature doesn't work yet");
 		}
 		
 	}
