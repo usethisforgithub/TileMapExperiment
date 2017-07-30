@@ -15,11 +15,15 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -32,17 +36,64 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 	//window stuff
 	private boolean isRunning,isDone;
 	private Image imgBuffer;
-	
+	private File spriteSheet;
 	private static int brushValue = 0;
 	
-	int numMapTilesX, numMapTilesY, windowX, windowY;
 	
-	 int[] map;
+	private int numMapTilesX, numMapTilesY, windowX, windowY, spriteSheetX, spriteSheetY, xRes, yRes;
 	
-	BufferedImage[] mapElements;
+	private int[] map;
 	
-	public EditorWindow(int x, int y){
+	private BufferedImage[] mapElements;
+	
+	public EditorWindow(int x, int y, File s){
 		super();
+		
+		spriteSheet = s;
+		
+		try {
+			//use file to scan the file
+			FileReader fr = new FileReader("reference.txt");
+			BufferedReader in = new BufferedReader(fr);
+			String line;
+			try {
+				
+				while((line = in.readLine()) != null){
+				  if(line.equals(spriteSheet.getAbsolutePath())) {
+					  line = in.readLine();
+					  String tempXdim = line.substring(0,line.indexOf(" "));
+					  String tempYdim = line.substring(line.indexOf(" ") + 1);
+					  line = in.readLine();
+					  String tempXres = line.substring(0,line.indexOf(" "));
+					  String tempYres = line.substring(line.indexOf(" ") + 1);
+					  
+					  spriteSheetX = Integer.parseInt(tempXdim); 
+					  spriteSheetY = Integer.parseInt(tempYdim); 
+					  xRes = Integer.parseInt(tempXres);
+					  yRes = Integer.parseInt(tempYres);
+					  
+					  break;
+				  }
+				}
+				
+			
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		} catch(NumberFormatException e){
+			
+		}catch(NoSuchElementException e){
+			
+		}
+		
+		
+		
+		
+		
 		
 		numMapTilesX = x;
 		numMapTilesY = y;
@@ -50,11 +101,11 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		map = new int[x*y];
 		
 		for(int i = 0; i < map.length; i++){
-			map[i] = 1247;//fills entire map with block 1247
+			map[i] = 0;//fills entire map with block 1247
 		}
 		
-		windowX = 20 + 20*numMapTilesX + 7;
-		windowY = 29 + 40 + 20*numMapTilesY;
+		windowX = 20 + xRes*numMapTilesX + 7;
+		windowY = 29 + 40 + yRes*numMapTilesY;
 		
 		
 		
@@ -63,7 +114,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		imgBuffer = this.createImage(windowX, windowY);
 	
 		//will use spritesheet filepath and sprite reference file
-		mapElements = SpriteSheet.getAsArray("sum.png", 39, 32, 20, 20);
+		mapElements = SpriteSheet.getAsArray(spriteSheet.getAbsolutePath(), spriteSheetY, spriteSheetX, xRes, yRes);
 		
 		
 		//more window stuff
@@ -83,8 +134,50 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		
 	}
 	
-	public EditorWindow(int x, int y, int[] m){
+	public EditorWindow(int x, int y, int[] m, File s){
 		super();
+		
+spriteSheet = s;
+		
+		try {
+			//use file to scan the file
+			FileReader fr = new FileReader("reference.txt");
+			BufferedReader in = new BufferedReader(fr);
+			String line;
+			try {
+				
+				while((line = in.readLine()) != null){
+				  if(line.equals(spriteSheet.getAbsolutePath())) {
+					  line = in.readLine();
+					  String tempXdim = line.substring(0,line.indexOf(" "));
+					  String tempYdim = line.substring(line.indexOf(" ") + 1);
+					  line = in.readLine();
+					  String tempXres = line.substring(0,line.indexOf(" "));
+					  String tempYres = line.substring(line.indexOf(" ") + 1);
+					  
+					  spriteSheetX = Integer.parseInt(tempXdim); 
+					  spriteSheetY = Integer.parseInt(tempYdim); 
+					  xRes = Integer.parseInt(tempXres);
+					  yRes = Integer.parseInt(tempYres);
+					  
+					  break;
+				  }
+				}
+				
+			
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		} catch(NumberFormatException e){
+			
+		}catch(NoSuchElementException e){
+			
+		}
+		
 		
 		numMapTilesX = x;
 		numMapTilesY = y;
@@ -93,13 +186,13 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 		
 		
 		
-		windowX = 20 + 20*numMapTilesX + 7;
-		windowY = 29 + 40 + 20*numMapTilesY;
+		windowX = 20 + xRes*numMapTilesX + 7;
+		windowY = 29 + 40 + yRes*numMapTilesY;
 		
 
 		imgBuffer = this.createImage(windowX, windowY);
 	
-		mapElements = SpriteSheet.getAsArray("sum.png", 39, 32, 20, 20);
+		mapElements = SpriteSheet.getAsArray(spriteSheet.getAbsolutePath(), spriteSheetY, spriteSheetX, xRes, yRes);
 		
 		
 		//more window stuff
@@ -255,7 +348,7 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		
-		//menu button
+		//save button
 		if((arg0.getX() >= 3 && arg0.getX() <= 23) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
 			JFrame parentFrame = new JFrame();
 			 
@@ -270,11 +363,13 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 				try{
 					File file = fileChooser.getSelectedFile();
 					String filename = file.getAbsolutePath() + ".txt";
-					FileWriter fw = new FileWriter(filename, true);
+					FileWriter fw = new FileWriter(filename, false);
 					BufferedWriter bw = new BufferedWriter(fw);
 					
 					
 					//bw.newLine();
+					bw.write(spriteSheet.getAbsolutePath());
+					bw.newLine();
 					bw.write(numMapTilesX + " " +numMapTilesY);
 					bw.newLine();
 					bw.write("20 20");
@@ -291,6 +386,10 @@ public class EditorWindow extends Frame implements WindowListener, Runnable, Key
 				{
 					System.err.println(":(");
 				}
+				
+				
+				
+				
 			}
 		}
 		
