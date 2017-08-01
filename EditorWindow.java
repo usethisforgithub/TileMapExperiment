@@ -396,7 +396,7 @@ spriteSheet = s;
 					try
 					{
 					    File filename = new File(dir, temp1+".txt");
-					    FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+					    FileWriter fw = new FileWriter(filename,false); //the true will append the new data
 					    BufferedWriter bw = new BufferedWriter(fw);
 					    
 					    bw.write(spriteSheet.getAbsolutePath());
@@ -444,12 +444,12 @@ spriteSheet = s;
 		
 		//export button
 		if((arg0.getX() >= 43 && arg0.getX() <= 63) && (arg0.getY() >= 25 && arg0.getY() <= 45)){
-			BufferedImage exportImage = new BufferedImage(20*numMapTilesX,20*numMapTilesY,mapElements[0].getType());//20*numMapTilesX, 20*numMapTilesY
+			BufferedImage exportImage = new BufferedImage(xRes*numMapTilesX,yRes*numMapTilesY,mapElements[0].getType());//20*numMapTilesX, 20*numMapTilesY
 			Graphics2D gr = exportImage.createGraphics();
 			
 			for(int i = 0; i < numMapTilesX; i++){
 				for(int j = 0; j < numMapTilesY; j++){
-					gr.drawImage(mapElements[map[0+(j*numMapTilesX) + i]], i*20, 20*j, null);//map[0+(i*32) + j]
+					gr.drawImage(mapElements[map[0+(j*numMapTilesX) + i]], i*xRes, yRes*j, null);//map[0+(i*32) + j]
 				}
 			}
 			
